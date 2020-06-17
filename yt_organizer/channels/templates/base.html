@@ -1,0 +1,34 @@
+{% load bootstrap4 %}
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  {% bootstrap_css %}
+  {% block extra_css %}{% endblock %}
+</head>
+
+<body>
+  {% block nav %}
+  <nav class="navbar fixed-top navbar-expand-lg navbar-dark bg-dark">
+
+    {% block nav_content %}
+    {% block navbar_brand %}
+    <a class="navbar-brand" href="#">YouTube Organizer</a>
+    {% endblock %}
+    {% endblock %}
+
+  </nav>
+  {% endblock %}
+
+  <div class="container">
+    {% block container %}{% endblock %}
+  </div>
+
+  {% bootstrap_javascript jquery="full" %}
+  {% block extra_js %}{% endblock %}
+</body>
+
+</html>

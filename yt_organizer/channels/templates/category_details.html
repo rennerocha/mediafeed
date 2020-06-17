@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+
+{% block container %}
+
+<br /><br /><br />
+<h1>{{ category.name }}</h1>
+<h5>Last 24 hours</h5>
+
+<div class="card-columns">
+    {% for video in videos %}
+
+    <a href="{{ video.url }}">
+        <div class="card">
+            <img src="{{video.thumbnail_image }}" class="card-img-top" alt="{{ video.title }}">
+            <div class="card-body">
+                <h5 class="card-title">{{ video.title }}</h5>
+                <p class="card-text">{{ video.channel.title }}</p>
+                <p class="card-text"><small class="text-muted">{{ video.published_date }}</small></p>
+            </div>
+        </div>
+    </a>
+
+    {% endfor %}
+</div>
+
+
+{% endblock %}
