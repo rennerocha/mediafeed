@@ -124,6 +124,29 @@ class VideoTestCase(TestCase):
 
         self.assertTrue(video in self.channel.videos.all())
 
+    def test_get_video_id_from_url_if_not_provided(self):
+        published_date = datetime.datetime(2020, 6, 12, 12, 38, 30)
+        video = Video.objects.create(
+            url="https://www.youtube.com/watch?v=UiFvgk0W3f8",
+            title="LHC Convida : Gedeane Kenshima [wearables e Eletrônica, como começar?] #FiqueEmCasa",
+            channel=self.channel,
+            thumbnail_image="https://i2.ytimg.com/vi/UiFvgk0W3f8/hqdefault.jpg",
+            published_date=published_date,
+        )
+        self.assertEqual(video.video_id, "UiFvgk0W3f8")
+
+    def test_set_video_id_as_provided(self):
+        published_date = datetime.datetime(2020, 6, 12, 12, 38, 30)
+        video = Video.objects.create(
+            url="https://www.youtube.com/watch?v=UiFvgk0W3f8",
+            title="LHC Convida : Gedeane Kenshima [wearables e Eletrônica, como começar?] #FiqueEmCasa",
+            channel=self.channel,
+            video_id="MY_CUSTOM_VIDEO_ID",
+            thumbnail_image="https://i2.ytimg.com/vi/UiFvgk0W3f8/hqdefault.jpg",
+            published_date=published_date,
+        )
+        self.assertEqual(video.video_id, "MY_CUSTOM_VIDEO_ID")
+
 
 class FeedTestCase(TestCase):
     def setUp(self):

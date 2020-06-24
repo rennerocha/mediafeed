@@ -49,7 +49,7 @@ class Video(models.Model):
         related_name="videos",
         related_query_name="video",
     )
-    video_id = models.CharField(max_length=100)
+    video_id = models.CharField(max_length=20)
     thumbnail_image = models.URLField()
     published_date = models.DateField()
 
@@ -59,6 +59,15 @@ class Video(models.Model):
 
     def __str__(self):
         return self.title
+
+    def save(self, *args, **kwargs):
+        if not self.video_id:
+            match = re.search(r"\?v=(?P<video_id>.*)", self.url)
+            if match:
+                match_dict = match.groupdict()
+                video_id = match_dict.get("video_id", "")
+                self.video_id = video_id
+        super().save(*args, **kwargs)
 
 
 class Category(models.Model):
