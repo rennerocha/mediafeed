@@ -1,7 +1,10 @@
+import json
 import re
 from urllib.parse import urlencode
 
+import dateparser
 import requests
+import xmltodict
 from django.conf import settings
 from django.contrib.auth.models import User
 from django.db import models
@@ -38,6 +41,24 @@ class Channel(models.Model):
         params = urlencode(params)
         self.feed_url = f"{settings.BASE_YOUTUBE_FEED_URL}?{params}"
         super().save(*args, **kwargs)
+
+    def sync_videos(self):
+        response = requests.get(self.feed_url)
+        channel_feed = xmltodict.parse(response.text)
+
+        existing_videos = list(self.videos.values_list("video_id", flat=True))
+        latest_videos = channel_feed["feed"]["entry"]
+        for entry in latest_videos:
+            video_id = entry["yt:videoId"]
+            if video_id not in existing_videos:
+                video = Video.objects.create(
+                    url=entry["link"]["@href"],
+                    title=entry["title"],
+                    channel=self,
+                    thumbnail_image=entry["media:group"]["media:thumbnail"]["@url"],
+                    published_date=dateparser.parse(entry["published"]),
+                )
+                Feed.objects.create(video=video, feed=json.dumps(entry))
 
 
 class Video(models.Model):
