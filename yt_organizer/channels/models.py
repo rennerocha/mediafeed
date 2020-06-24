@@ -49,7 +49,7 @@ class Video(models.Model):
         related_name="videos",
         related_query_name="video",
     )
-    video_id = models.CharField(max_length=20)
+    video_id = models.CharField(max_length=20, unique=True)
     thumbnail_image = models.URLField()
     published_date = models.DateField()
 

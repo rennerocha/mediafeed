@@ -147,6 +147,28 @@ class VideoTestCase(TestCase):
         )
         self.assertEqual(video.video_id, "MY_CUSTOM_VIDEO_ID")
 
+    def test_can_not_have_two_videos_with_same_video_id(self):
+        published_date = datetime.datetime(2020, 6, 12, 12, 38, 30)
+        video_1 = Video.objects.create(
+            url="https://www.youtube.com/watch?v=UiFvgk0W3f8",
+            title="LHC Convida : Gedeane Kenshima [wearables e Eletrônica, como começar?] #FiqueEmCasa",
+            channel=self.channel,
+            video_id="VIDEO_ID",
+            thumbnail_image="https://i2.ytimg.com/vi/UiFvgk0W3f8/hqdefault.jpg",
+            published_date=published_date,
+        )
+
+        with self.assertRaises(ValidationError):
+            video_2 = Video(
+                url="https://www.youtube.com/watch?v=UiFvgk0W3f8",
+                title="Another Video",
+                channel=self.channel,
+                video_id="VIDEO_ID",
+                thumbnail_image="https://i2.ytimg.com/vi/UiFvgk0W3f8/hqdefault.jpg",
+                published_date=published_date,
+            )
+            video_2.full_clean()
+
 
 class FeedTestCase(TestCase):
     def setUp(self):
