@@ -1,9 +1,34 @@
 from django.contrib import admin
 
-from channels.models import Channel, Video, Category, Feed
+from channels.models import Category, Channel, Feed, Video
 
 
-admin.site.register(Category)
+class VideoInline(admin.TabularInline):
+    model = Video
+
+
+@admin.register(Channel)
+class ChannelAdmin(admin.ModelAdmin):
+    inlines = [
+        VideoInline,
+    ]
+
+
+@admin.register(Category)
+class CategoryAdmin(admin.ModelAdmin):
+    model = Category
+    readonly_fields = ("slug",)
+
+
+class FeedInline(admin.TabularInline):
+    model = Feed
+
+
+@admin.register(Video)
+class VideoAdmin(admin.ModelAdmin):
+    inlines = [
+        FeedInline,
+    ]
+
+
 admin.site.register(Feed)
-admin.site.register(Channel)
-admin.site.register(Video)
