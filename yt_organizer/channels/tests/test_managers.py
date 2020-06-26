@@ -35,3 +35,27 @@ class VideoManagerTestCase(TestCase):
 
         self.assertTrue(video_last_24h in videos)
         self.assertTrue(older_video not in videos)
+
+    def test_last_week(self):
+        last_week = datetime.datetime.now() - datetime.timedelta(days=7)
+        older_than_week = last_week + datetime.timedelta(seconds=1)
+
+        video_last_week = Video.objects.create(
+            url="https://www.youtube.com/watch?v=UiFvgk0W3f8",
+            title="LHC Convida : Gedeane Kenshima [wearables e Eletrônica, como começar?] #FiqueEmCasa",
+            channel=self.channel,
+            thumbnail_image="https://i2.ytimg.com/vi/UiFvgk0W3f8/hqdefault.jpg",
+            published_date=last_week,
+        )
+        older_than_week_video = Video.objects.create(
+            url="https://www.youtube.com/watch?v=t_AZThnDUCU",
+            title="LHC Convida: Sérgio Amadeu [Tecnologia e Política] #FiqueEmCasa",
+            channel=self.channel,
+            thumbnail_image="https://i1.ytimg.com/vi/t_AZThnDUCU/hqdefault.jpg",
+            published_date=older_than_week,
+        )
+
+        videos = Video.objects.last_week()
+
+        self.assertTrue(video_last_week in videos)
+        self.assertTrue(older_than_week_video not in videos)
