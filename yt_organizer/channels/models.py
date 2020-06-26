@@ -11,6 +11,8 @@ from django.db import models
 from django.utils.text import slugify
 from parsel import Selector
 
+from channels.managers import VideoManager
+
 
 class Channel(models.Model):
     title = models.CharField(max_length=255)
@@ -73,6 +75,8 @@ class Video(models.Model):
     video_id = models.CharField(max_length=20, unique=True)
     thumbnail_image = models.URLField()
     published_date = models.DateTimeField()
+
+    objects = VideoManager()
 
     class Meta:
         verbose_name = "video"
