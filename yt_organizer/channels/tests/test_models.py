@@ -85,15 +85,15 @@ class VideoTestCase(TestCase):
             title="Laboratório Hacker de Campinas",
             url="https://www.youtube.com/channel/UCE4lrMOsEM6jSQvgvSdzZUA",
         )
+        self.published_date = datetime.datetime(2020, 6, 12, 12, 38, 30)
 
     def test_saving_new_video(self):
-        published_date = datetime.datetime(2020, 6, 12, 12, 38, 30)
         video = Video(
             url="https://www.youtube.com/watch?v=UiFvgk0W3f8",
             title="LHC Convida : Gedeane Kenshima [wearables e Eletrônica, como começar?] #FiqueEmCasa",
             channel=self.channel,
             thumbnail_image="https://i2.ytimg.com/vi/UiFvgk0W3f8/hqdefault.jpg",
-            published_date=published_date,
+            published_date=self.published_date,
         )
         video.save()
 
@@ -101,61 +101,56 @@ class VideoTestCase(TestCase):
         self.assertEqual(saved_videos.count(), 1)
 
     def test_video_repr(self):
-        published_date = datetime.datetime(2020, 6, 12, 12, 38, 30)
         video = Video.objects.create(
             url="https://www.youtube.com/watch?v=UiFvgk0W3f8",
             title="LHC Convida : Gedeane Kenshima [wearables e Eletrônica, como começar?] #FiqueEmCasa",
             channel=self.channel,
             thumbnail_image="https://i2.ytimg.com/vi/UiFvgk0W3f8/hqdefault.jpg",
-            published_date=published_date,
+            published_date=self.published_date,
         )
 
         self.assertEqual(repr(video), f"<Video: {video.title}>")
 
     def test_video_accessible_to_channel(self):
-        published_date = datetime.datetime(2020, 6, 12, 12, 38, 30)
         video = Video.objects.create(
             url="https://www.youtube.com/watch?v=UiFvgk0W3f8",
             title="LHC Convida : Gedeane Kenshima [wearables e Eletrônica, como começar?] #FiqueEmCasa",
             channel=self.channel,
             thumbnail_image="https://i2.ytimg.com/vi/UiFvgk0W3f8/hqdefault.jpg",
-            published_date=published_date,
+            published_date=self.published_date,
         )
 
         self.assertTrue(video in self.channel.videos.all())
 
     def test_get_video_id_from_url_if_not_provided(self):
-        published_date = datetime.datetime(2020, 6, 12, 12, 38, 30)
         video = Video.objects.create(
             url="https://www.youtube.com/watch?v=UiFvgk0W3f8",
             title="LHC Convida : Gedeane Kenshima [wearables e Eletrônica, como começar?] #FiqueEmCasa",
             channel=self.channel,
             thumbnail_image="https://i2.ytimg.com/vi/UiFvgk0W3f8/hqdefault.jpg",
-            published_date=published_date,
+            published_date=self.published_date,
         )
         self.assertEqual(video.video_id, "UiFvgk0W3f8")
 
     def test_set_video_id_as_provided(self):
-        published_date = datetime.datetime(2020, 6, 12, 12, 38, 30)
         video = Video.objects.create(
             url="https://www.youtube.com/watch?v=UiFvgk0W3f8",
             title="LHC Convida : Gedeane Kenshima [wearables e Eletrônica, como começar?] #FiqueEmCasa",
             channel=self.channel,
             video_id="MY_CUSTOM_VIDEO_ID",
             thumbnail_image="https://i2.ytimg.com/vi/UiFvgk0W3f8/hqdefault.jpg",
-            published_date=published_date,
+            published_date=self.published_date,
         )
         self.assertEqual(video.video_id, "MY_CUSTOM_VIDEO_ID")
 
     def test_can_not_have_two_videos_with_same_video_id(self):
-        published_date = datetime.datetime(2020, 6, 12, 12, 38, 30)
         video_1 = Video.objects.create(
             url="https://www.youtube.com/watch?v=UiFvgk0W3f8",
             title="LHC Convida : Gedeane Kenshima [wearables e Eletrônica, como começar?] #FiqueEmCasa",
             channel=self.channel,
             video_id="VIDEO_ID",
             thumbnail_image="https://i2.ytimg.com/vi/UiFvgk0W3f8/hqdefault.jpg",
-            published_date=published_date,
+            published_date=self.published_date,
         )
 
         with self.assertRaises(ValidationError):
@@ -165,7 +160,7 @@ class VideoTestCase(TestCase):
                 channel=self.channel,
                 video_id="VIDEO_ID",
                 thumbnail_image="https://i2.ytimg.com/vi/UiFvgk0W3f8/hqdefault.jpg",
-                published_date=published_date,
+                published_date=self.published_date,
             )
             video_2.full_clean()
 
