@@ -72,7 +72,7 @@ class Video(models.Model):
     )
     video_id = models.CharField(max_length=20, unique=True)
     thumbnail_image = models.URLField()
-    published_date = models.DateField()
+    published_date = models.DateTimeField()
 
     class Meta:
         verbose_name = "video"
