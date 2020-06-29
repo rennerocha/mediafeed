@@ -3,7 +3,7 @@ import datetime
 from django.db import models
 
 
-class VideoManager(models.Manager):
+class VideoQuerySet(models.QuerySet):
     def last_24h(self):
         from channels.models import Video
 

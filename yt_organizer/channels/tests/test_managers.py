@@ -58,3 +58,43 @@ class VideoManagerTestCase(TestCase):
         self.assertTrue(video_1 in videos)
         self.assertTrue(video_2 in videos)
         self.assertTrue(video_3 not in videos)
+
+    def test_videos_last_24h_videos_for_categories(self):
+        category_1 = baker.make(Category)
+        channel_1 = baker.make(Channel)
+
+        last_24h = datetime.datetime.now() - datetime.timedelta(hours=24)
+        older_than_24h = last_24h + datetime.timedelta(seconds=1)
+
+        video_1 = baker.make(Video, channel=channel_1, published_date=last_24h)
+        video_2 = baker.make(Video, channel=channel_1, published_date=last_24h)
+        video_3 = baker.make(Video, channel=channel_1, published_date=older_than_24h)
+        video_4 = baker.make(Video, channel=channel_1, published_date=older_than_24h)
+
+        categories = Category.objects.filter(title__in=[category_1.title])
+        videos = Video.objects.for_categories(categories).last_24h()
+
+        self.assertTrue(video_1 in videos)
+        self.assertTrue(video_2 in videos)
+        self.assertTrue(video_3 not in videos)
+        self.assertTrue(video_4 not in videos)
+
+    def test_videos_last_week_videos_for_categories(self):
+        category_1 = baker.make(Category)
+        channel_1 = baker.make(Channel)
+
+        last_week = datetime.datetime.now() - datetime.timedelta(days=7)
+        older_than_week = last_week + datetime.timedelta(seconds=1)
+
+        video_1 = baker.make(Video, channel=channel_1, published_date=last_week)
+        video_2 = baker.make(Video, channel=channel_1, published_date=last_week)
+        video_3 = baker.make(Video, channel=channel_1, published_date=older_than_week)
+        video_4 = baker.make(Video, channel=channel_1, published_date=older_than_week)
+
+        categories = Category.objects.filter(title__in=[category_1.title])
+        videos = Video.objects.for_categories(categories).last_week()
+
+        self.assertTrue(video_1 in videos)
+        self.assertTrue(video_2 in videos)
+        self.assertTrue(video_3 not in videos)
+        self.assertTrue(video_4 not in videos)
