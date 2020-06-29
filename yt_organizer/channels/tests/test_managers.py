@@ -8,29 +8,14 @@ from channels.models import Category, Channel, Video
 
 class VideoManagerTestCase(TestCase):
     def setUp(self):
-        self.channel = Channel.objects.create(
-            title="Laboratório Hacker de Campinas",
-            url="https://www.youtube.com/channel/UCE4lrMOsEM6jSQvgvSdzZUA",
-        )
+        self.channel = baker.make(Channel)
 
     def test_last_24h(self):
         last_24h = datetime.datetime.now() - datetime.timedelta(hours=24)
         older_than_24h = last_24h + datetime.timedelta(seconds=1)
 
-        video_last_24h = Video.objects.create(
-            url="https://www.youtube.com/watch?v=UiFvgk0W3f8",
-            title="LHC Convida : Gedeane Kenshima [wearables e Eletrônica, como começar?] #FiqueEmCasa",
-            channel=self.channel,
-            thumbnail_image="https://i2.ytimg.com/vi/UiFvgk0W3f8/hqdefault.jpg",
-            published_date=last_24h,
-        )
-        older_video = Video.objects.create(
-            url="https://www.youtube.com/watch?v=t_AZThnDUCU",
-            title="LHC Convida: Sérgio Amadeu [Tecnologia e Política] #FiqueEmCasa",
-            channel=self.channel,
-            thumbnail_image="https://i1.ytimg.com/vi/t_AZThnDUCU/hqdefault.jpg",
-            published_date=older_than_24h,
-        )
+        video_last_24h = baker.make(Video, published_date=last_24h)
+        older_video = baker.make(Video, published_date=older_than_24h)
 
         videos = Video.objects.last_24h()
 
@@ -41,20 +26,8 @@ class VideoManagerTestCase(TestCase):
         last_week = datetime.datetime.now() - datetime.timedelta(days=7)
         older_than_week = last_week + datetime.timedelta(seconds=1)
 
-        video_last_week = Video.objects.create(
-            url="https://www.youtube.com/watch?v=UiFvgk0W3f8",
-            title="LHC Convida : Gedeane Kenshima [wearables e Eletrônica, como começar?] #FiqueEmCasa",
-            channel=self.channel,
-            thumbnail_image="https://i2.ytimg.com/vi/UiFvgk0W3f8/hqdefault.jpg",
-            published_date=last_week,
-        )
-        older_than_week_video = Video.objects.create(
-            url="https://www.youtube.com/watch?v=t_AZThnDUCU",
-            title="LHC Convida: Sérgio Amadeu [Tecnologia e Política] #FiqueEmCasa",
-            channel=self.channel,
-            thumbnail_image="https://i1.ytimg.com/vi/t_AZThnDUCU/hqdefault.jpg",
-            published_date=older_than_week,
-        )
+        video_last_week = baker.make(Video, published_date=last_week)
+        older_than_week_video = baker.make(Video, published_date=older_than_week)
 
         videos = Video.objects.last_week()
 

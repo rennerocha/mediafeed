@@ -4,13 +4,14 @@ from django.conf import settings
 from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
 from django.test import TestCase
+from model_bakery import baker
 
 from channels.models import Category, Channel, Feed, Video
 
 
 class ChannelTestCase(TestCase):
     def setUp(self):
-        self.user = User.objects.create(username="username", password="password")
+        self.user = baker.make(User)
 
     def test_saving_new_channel(self):
         channel = Channel(
@@ -23,10 +24,7 @@ class ChannelTestCase(TestCase):
         self.assertEqual(saved_channels.count(), 1)
 
     def test_channel_repr(self):
-        channel = Channel.objects.create(
-            title="Channel Title",
-            url="https://www.youtube.com/channel/UCsn8UgBuRxGGqKmrAy5d3gA",
-        )
+        channel = baker.make(Channel)
         self.assertEqual(repr(channel), f"<Channel: {channel.title}>")
 
     def test_create_channel_feed_url_on_creation(self):
@@ -48,31 +46,15 @@ class ChannelTestCase(TestCase):
         )
 
     def test_channel_searchable_by_video(self):
-        channel = Channel.objects.create(
-            title="Channel Title",
-            url="https://www.youtube.com/channel/UCsn8UgBuRxGGqKmrAy5d3gA",
-        )
-
-        published_date = datetime.datetime(2020, 6, 12, 12, 38, 30)
-        video = Video.objects.create(
-            url="https://www.youtube.com/watch?v=UiFvgk0W3f8",
-            title="LHC Convida : Gedeane Kenshima [wearables e Eletrônica, como começar?] #FiqueEmCasa",
-            channel=channel,
-            thumbnail_image="https://i2.ytimg.com/vi/UiFvgk0W3f8/hqdefault.jpg",
-            published_date=published_date,
-        )
+        channel = baker.make(Channel)
+        video = baker.make(Video, channel=channel)
 
         channels = Channel.objects.filter(video__title=video.title)
         self.assertTrue(channel in channels)
 
     def test_channel_searchable_by_category(self):
-        category = Category.objects.create(
-            title="Category Title", public=True, user=self.user,
-        )
-        channel = Channel.objects.create(
-            title="Channel Title",
-            url="https://www.youtube.com/channel/UCsn8UgBuRxGGqKmrAy5d3gA",
-        )
+        category = baker.make(Category)
+        channel = baker.make(Channel)
         category.channels.add(channel)
 
         channels = Channel.objects.filter(categories__title=category.title)
@@ -81,10 +63,7 @@ class ChannelTestCase(TestCase):
 
 class VideoTestCase(TestCase):
     def setUp(self):
-        self.channel = Channel.objects.create(
-            title="Laboratório Hacker de Campinas",
-            url="https://www.youtube.com/channel/UCE4lrMOsEM6jSQvgvSdzZUA",
-        )
+        self.channel = baker.make(Channel)
         self.published_date = datetime.datetime(2020, 6, 12, 12, 38, 30)
 
     def test_saving_new_video(self):
@@ -112,13 +91,7 @@ class VideoTestCase(TestCase):
         self.assertEqual(repr(video), f"<Video: {video.title}>")
 
     def test_video_accessible_to_channel(self):
-        video = Video.objects.create(
-            url="https://www.youtube.com/watch?v=UiFvgk0W3f8",
-            title="LHC Convida : Gedeane Kenshima [wearables e Eletrônica, como começar?] #FiqueEmCasa",
-            channel=self.channel,
-            thumbnail_image="https://i2.ytimg.com/vi/UiFvgk0W3f8/hqdefault.jpg",
-            published_date=self.published_date,
-        )
+        video = baker.make(Video, channel=self.channel)
 
         self.assertTrue(video in self.channel.videos.all())
 
@@ -167,19 +140,8 @@ class VideoTestCase(TestCase):
 
 class FeedTestCase(TestCase):
     def setUp(self):
-        self.channel = Channel.objects.create(
-            title="Laboratório Hacker de Campinas",
-            url="https://www.youtube.com/channel/UCE4lrMOsEM6jSQvgvSdzZUA",
-        )
-
-        published_date = datetime.datetime(2020, 6, 12, 12, 38, 30)
-        self.video = Video.objects.create(
-            url="https://www.youtube.com/watch?v=UiFvgk0W3f8",
-            title="LHC Convida : Gedeane Kenshima [wearables e Eletrônica, como começar?] #FiqueEmCasa",
-            channel=self.channel,
-            thumbnail_image="https://i2.ytimg.com/vi/UiFvgk0W3f8/hqdefault.jpg",
-            published_date=published_date,
-        )
+        self.channel = baker.make(Channel)
+        self.video = baker.make(Video, channel=self.channel)
 
     def test_saving_new_feed(self):
         feed_content = (
@@ -203,7 +165,7 @@ class FeedTestCase(TestCase):
 
 class CategoryTestCase(TestCase):
     def setUp(self):
-        self.user = User.objects.create(username="username", password="password")
+        self.user = baker.make(User)
 
     def test_saving_new_category(self):
         category = Category(title="Category Title", public=True, user=self.user,)
