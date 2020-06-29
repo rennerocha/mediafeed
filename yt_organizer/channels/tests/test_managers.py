@@ -1,8 +1,9 @@
 import datetime
 
 from django.test import TestCase
+from model_bakery import baker
 
-from channels.models import Channel, Video
+from channels.models import Category, Channel, Video
 
 
 class VideoManagerTestCase(TestCase):
@@ -59,3 +60,28 @@ class VideoManagerTestCase(TestCase):
 
         self.assertTrue(video_last_week in videos)
         self.assertTrue(older_than_week_video not in videos)
+
+    def test_videos_for_categories(self):
+        category_1 = baker.make(Category)
+        channel_1 = baker.make(Channel)
+        video_1 = baker.make(Video, channel=channel_1)
+        category_1.channels.add(channel_1)
+
+        category_2 = baker.make(Category)
+        channel_2 = baker.make(Channel)
+        video_2 = baker.make(Video, channel=channel_2)
+        category_2.channels.add(channel_2)
+
+        category_3 = baker.make(Category)
+        channel_3 = baker.make(Channel)
+        video_3 = baker.make(Video, channel=channel_3)
+        category_3.channels.add(channel_3)
+
+        categories = Category.objects.filter(
+            title__in=[category_1.title, category_2.title]
+        )
+        videos = Video.objects.for_categories(categories)
+
+        self.assertTrue(video_1 in videos)
+        self.assertTrue(video_2 in videos)
+        self.assertTrue(video_3 not in videos)
