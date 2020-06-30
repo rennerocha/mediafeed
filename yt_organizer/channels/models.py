@@ -11,7 +11,7 @@ from django.db import models
 from django.utils.text import slugify
 from parsel import Selector
 
-from channels.managers import VideoManager
+from channels.managers import VideoQuerySet
 
 
 class Channel(models.Model):
@@ -76,7 +76,7 @@ class Video(models.Model):
     thumbnail_image = models.URLField()
     published_date = models.DateTimeField()
 
-    objects = VideoManager()
+    objects = VideoQuerySet.as_manager()
 
     class Meta:
         verbose_name = "video"
