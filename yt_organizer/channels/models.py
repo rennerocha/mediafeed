@@ -49,7 +49,7 @@ class Channel(models.Model):
         response = requests.get(self.feed_url)
         channel_feed = xmltodict.parse(response.text)
 
-        existing_videos = list(self.videos.values_list("video_id", flat=True))
+        existing_videos = list(Video.objects.all().values_list("video_id", flat=True))
         latest_videos = channel_feed["feed"]["entry"]
         for entry in latest_videos:
             video_id = entry["yt:videoId"]
