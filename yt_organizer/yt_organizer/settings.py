@@ -25,7 +25,7 @@ SECRET_KEY = "y4b48cl70^om@shwaw+h(re7r#8dzr2u4$%7#k2+a-0s^_b&qo"
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["app"]
 
 
 # Application definition
@@ -37,7 +37,6 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
-    "bootstrap4",
     "channels",
 ]
 
@@ -112,7 +111,7 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.0/howto/static-files/
-
+STATIC_ROOT = "/static/"
 STATIC_URL = "/static/"
 
 BASE_YOUTUBE_FEED_URL = "https://www.youtube.com/feeds/videos.xml"

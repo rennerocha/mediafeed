@@ -5,7 +5,7 @@ ENV POETRY_HOME="/opt/poetry"
 ENV PATH="$POETRY_HOME/bin:$PATH"
 RUN curl -sSL https://raw.githubusercontent.com/python-poetry/poetry/master/get-poetry.py | python
 
-COPY poetry.lock pyproject.toml /
+COPY poetry.lock pyproject.toml start_app.sh /
 RUN poetry config virtualenvs.create false && poetry install --no-dev
 
 ENV APP_ROOT /yt_organizer

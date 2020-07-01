@@ -5,6 +5,19 @@ services:
     build: .
     container_name: yt-organizer-app
     restart: always
+    volumes:
+      - ./static:/static
+    expose:
+      - "8000"
+    command: "/start_app.sh"
+
+  app-static:
+    image: nginx:latest
+    container_name: yt-organizer-app-static
     ports:
       - "8000:8000"
-    command: "gunicorn --workers=2 --bind=0.0.0.0:8000 yt_organizer.wsgi:application"
+    volumes:
+      - ./config/nginx:/etc/nginx/conf.d
+      - ./static:/static
+    depends_on:
+      - app
