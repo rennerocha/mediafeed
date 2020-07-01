@@ -40,8 +40,9 @@ class Channel(models.Model):
             if channel_id is not None:
                 params = {"channel_id": channel_id}
 
-        params = urlencode(params)
-        self.feed_url = f"{settings.BASE_YOUTUBE_FEED_URL}?{params}"
+            params = urlencode(params)
+            self.feed_url = f"{settings.BASE_YOUTUBE_FEED_URL}?{params}"
+
         super().save(*args, **kwargs)
 
     def sync_videos(self):
