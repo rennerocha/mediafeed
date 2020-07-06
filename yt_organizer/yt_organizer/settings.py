@@ -71,7 +71,7 @@ DATABASES = {
         "USER": config("DATABASES_USER", default=None),
         "PASSWORD": config("DATABASES_PASSWORD", default=None),
         "HOST": config("DATABASES_HOST", default=None),
-        "PORT": config("DATABASES_PORT", default=None),
+        "PORT": config("DATABASES_PORT", default=""),
     }
 }
 

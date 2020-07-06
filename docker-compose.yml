@@ -9,6 +9,10 @@ services:
       - ./static:/static
     expose:
       - "8000"
+    depends_on:
+      - db
+    env_file:
+      - .env
     command: "/start_app.sh"
 
   app-static:
@@ -21,3 +25,13 @@ services:
       - ./static:/static
     depends_on:
       - app
+
+  db:
+    image: postgres:12.3-alpine
+    volumes:
+      - postgres_data:/var/lib/postgresql/data/
+    env_file:
+      - .env
+
+volumes:
+  postgres_data:
