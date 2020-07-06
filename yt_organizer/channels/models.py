@@ -103,7 +103,7 @@ class Category(models.Model):
     channels = models.ManyToManyField(
         Channel, related_name="category", related_query_name="categories"
     )
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
 
     class Meta:
         verbose_name = "category"

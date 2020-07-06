@@ -173,6 +173,18 @@ class CategoryTestCase(TestCase):
         saved_categories = Category.objects.all()
         self.assertEqual(saved_categories.count(), 1)
 
+    def test_user_can_have_more_than_one_category_related(self):
+        category_1 = Category(title="Category 1 Title", user=self.user,)
+        category_2 = Category(title="Category 2 Title", public=True, user=self.user,)
+
+        try:
+            category_1.save()
+            category_2.save()
+        except:
+            self.fail(
+                "We should be able to have more than one category related to an user"
+            )
+
     def test_category_repr(self):
         category = Category.objects.create(
             title="Category Title", public=True, user=self.user,
