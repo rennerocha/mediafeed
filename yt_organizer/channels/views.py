@@ -1,18 +1,17 @@
-from django.http import HttpResponse
 import datetime
-from django.shortcuts import render
+
+from django.contrib.auth.models import User
+from django.http import HttpResponse
+from django.shortcuts import get_object_or_404, render
+
 from channels.models import Category, Video
 
 
-def category_details(request, slug):
-    category = Category.objects.get(slug=slug)
-    channels = category.channels.all()
+def category_details(request, username, slug):
+    if request.user.is_authenticated:
+        category = get_object_or_404(Category, slug=slug, user=request.user)
+    else:
+        user = get_object_or_404(User, username=username)
+        category = get_object_or_404(Category, slug=slug, user=user, public=True)
 
-    last_24h = datetime.datetime.now() - datetime.timedelta(hours=24)
-    videos = Video.objects.filter(published_date__gte=last_24h).order_by(
-        "published_date"
-    )
-
-    return render(
-        request, "category_details.html", {"category": category, "videos": videos}
-    )
+    return HttpResponse(category.title)
