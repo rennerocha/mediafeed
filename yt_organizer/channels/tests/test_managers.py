@@ -1,6 +1,7 @@
 import datetime
 
 from django.test import TestCase
+from django.utils import timezone
 from model_bakery import baker
 
 from channels.models import Category, Channel, Video
@@ -11,20 +12,29 @@ class VideoManagerTestCase(TestCase):
         self.channel = baker.make(Channel)
 
     def test_last_24h(self):
-        last_24h = datetime.datetime.now() - datetime.timedelta(hours=24)
-        older_than_24h = last_24h + datetime.timedelta(seconds=1)
+        just_now = timezone.now()
+        last_24h = just_now - datetime.timedelta(hours=24)
+        older_than_24h = last_24h - datetime.timedelta(minutes=1)
 
-        video_last_24h = baker.make(Video, published_date=last_24h)
-        older_video = baker.make(Video, published_date=older_than_24h)
+        video_just_now = baker.make(
+            Video, title="Video Just Now", published_date=just_now
+        )
+        video_last_24h = baker.make(
+            Video, title="Video 24h Ago", published_date=last_24h
+        )
+        video_older_than_24h = baker.make(
+            Video, title="Video 24h Ago + 1 minute", published_date=older_than_24h
+        )
 
         videos = Video.objects.last_24h()
 
+        self.assertTrue(video_just_now in videos)
         self.assertTrue(video_last_24h in videos)
-        self.assertTrue(older_video not in videos)
+        self.assertTrue(video_older_than_24h not in videos)
 
     def test_last_week(self):
-        last_week = datetime.datetime.now() - datetime.timedelta(days=7)
-        older_than_week = last_week + datetime.timedelta(seconds=1)
+        last_week = timezone.now() - datetime.timedelta(days=7)
+        older_than_week = last_week - datetime.timedelta(minutes=1)
 
         video_last_week = baker.make(Video, published_date=last_week)
         older_than_week_video = baker.make(Video, published_date=older_than_week)
@@ -63,8 +73,8 @@ class VideoManagerTestCase(TestCase):
         category_1 = baker.make(Category)
         channel_1 = baker.make(Channel)
 
-        last_24h = datetime.datetime.now() - datetime.timedelta(hours=24)
-        older_than_24h = last_24h + datetime.timedelta(seconds=1)
+        last_24h = timezone.now() - datetime.timedelta(hours=24)
+        older_than_24h = last_24h - datetime.timedelta(minutes=1)
 
         video_1 = baker.make(Video, channel=channel_1, published_date=last_24h)
         video_2 = baker.make(Video, channel=channel_1, published_date=last_24h)
@@ -83,8 +93,8 @@ class VideoManagerTestCase(TestCase):
         category_1 = baker.make(Category)
         channel_1 = baker.make(Channel)
 
-        last_week = datetime.datetime.now() - datetime.timedelta(days=7)
-        older_than_week = last_week + datetime.timedelta(seconds=1)
+        last_week = timezone.now() - datetime.timedelta(days=7)
+        older_than_week = last_week - datetime.timedelta(minutes=1)
 
         video_1 = baker.make(Video, channel=channel_1, published_date=last_week)
         video_2 = baker.make(Video, channel=channel_1, published_date=last_week)
