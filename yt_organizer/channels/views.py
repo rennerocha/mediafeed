@@ -14,4 +14,13 @@ def category_details(request, username, slug):
         user = get_object_or_404(User, username=username)
         category = get_object_or_404(Category, slug=slug, user=user, public=True)
 
-    return HttpResponse(category.title)
+    period = request.GET.get("period", "last_24h")
+    video_by_period = {
+        "all": Video.objects.all(),
+        "week": Video.objects.last_week(),
+        "last_24h": Video.objects.last_24h(),
+    }
+    videos = video_by_period.get(period, [])
+    context = {"videos": list(videos)}
+
+    return render(request, "base.html", context=context)
