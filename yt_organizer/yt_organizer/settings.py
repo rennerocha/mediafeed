@@ -107,6 +107,6 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.0/howto/static-files/
 STATIC_ROOT = config("STATIC_ROOT", default="/static/")
 
-STATIC_URL = config("STATIC_ROOT", default="/static/")
+STATIC_URL = config("STATIC_URL", default="/static/")
 
 BASE_YOUTUBE_FEED_URL = "https://www.youtube.com/feeds/videos.xml"
