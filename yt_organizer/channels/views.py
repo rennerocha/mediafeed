@@ -23,6 +23,16 @@ def category_details(request, username, slug):
         "last_24h": videos_of_category.last_24h(),
     }
     videos = video_by_period.get(period, [])
-    context = {"videos": list(videos)}
 
-    return render(request, "base.html", context=context)
+    # TODO - These lines needs to be have tests to ensure the context is correct
+    period_labels = {"all": "All", "week": "This Week", "last_24h": "Last 24h"}
+    selected_period = period_labels[period]
+    ########
+
+    context = {
+        "category": category,
+        "videos": list(videos),
+        "selected_period": selected_period,
+    }
+
+    return render(request, "category_details.html", context=context)

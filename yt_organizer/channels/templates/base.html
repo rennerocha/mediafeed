@@ -1,34 +1,67 @@
-{% load bootstrap4 %}
 <!DOCTYPE html>
 
 <html lang="en">
 
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  {% bootstrap_css %}
-  {% block extra_css %}{% endblock %}
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://unpkg.com/purecss@2.0.3/build/pure-min.css"
+        integrity="sha384-cg6SkqEOCV1NbJoCu11+bm0NvBRc8IYLRGXkmNrqUBfTjmMYwNKPWBTIKyw9mHNJ" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://unpkg.com/purecss@2.0.3/build/grids-responsive-min.css" />
+
+    {% block extra_css %}
+    <style>
+        #menu {
+            background-color: #dde6d5;
+        }
+
+        ul {
+            list-style-type: square;
+        }
+
+        li {
+            display: inline;
+        }
+    </style>
+    {% endblock %}
 </head>
 
 <body>
-  {% block nav %}
-  <nav class="navbar fixed-top navbar-expand-lg navbar-dark bg-dark">
+    <div class="pure-g">
+        <div class="pure-u-4-24"></div>
 
-    {% block nav_content %}
-    {% block navbar_brand %}
-    <a class="navbar-brand" href="#">YouTube Organizer</a>
-    {% endblock %}
-    {% endblock %}
+        <div class="pure-u-16-24">
+            <div id="menu" class="pure-menu pure-menu-horizontal">
+                <a href="#" class="pure-menu-heading pure-menu-link">YouTube Organizer</a>
 
-  </nav>
-  {% endblock %}
+                <ul class="pure-menu-list">
+                    {% if request.user.is_authenticated %}
+                    <li class="pure-menu-item">
+                        <a href="" class="pure-menu-link">Log out</a>
+                    </li>
+                    {% else %}
+                    <li class="pure-menu-item">
+                        <a href="" class="pure-menu-link">Sign in</a>
+                    </li>
+                    <li class="pure-menu-item">
+                        <a href="" class="pure-menu-link">Sign Up</a>
+                    </li>
+                    {% endif %}
+                </ul>
+            </div>
 
-  <div class="container">
-    {% block container %}{% endblock %}
-  </div>
+            <div id="content" class="pure-g">
+                <div class="pure-u-5-5">
+                    {% block content %}
+                    {% endblock %}
+                </div>
+            </div>
 
-  {% bootstrap_javascript jquery="full" %}
-  {% block extra_js %}{% endblock %}
+        </div>
+
+        <div class="pure-u-4-24"></div>
+    </div>
+    {% block extra_js %}{% endblock %}
 </body>
 
 </html>
