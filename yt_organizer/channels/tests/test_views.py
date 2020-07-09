@@ -81,6 +81,8 @@ class CategoryDetailAccessTestCase(TestCase):
 class CategoryDetailTestCase(TestCase):
     def setUp(self):
         self.category = baker.make(Category, public=True)
+        self.channel = baker.make(Channel)
+        self.category.channels.add(self.channel)
 
     def test_context_has_list_of_videos(self):
         url = reverse(
@@ -93,13 +95,10 @@ class CategoryDetailTestCase(TestCase):
         self.assertTrue(response.context["videos"] == [])
 
     def test_return_videos_of_category(self):
-        channel = baker.make(Channel)
-        self.category.channels.add(channel)
-
-        published_date = datetime.datetime.now()
+        published_date = timezone.now()
         videos = [
-            baker.make(Video, published_date=published_date),
-            baker.make(Video, published_date=published_date),
+            baker.make(Video, channel=self.channel, published_date=published_date),
+            baker.make(Video, channel=self.channel, published_date=published_date),
         ]
 
         url = reverse(
@@ -111,15 +110,14 @@ class CategoryDetailTestCase(TestCase):
         self.assertTrue(response.context["videos"] == videos)
 
     def test_return_last_24h_videos_of_category_by_default(self):
-        channel = baker.make(Channel)
-        self.category.channels.add(channel)
+        just_now = timezone.now()
+        video_last_24h = baker.make(
+            Video, channel=self.channel, published_date=just_now
+        )
 
-        last_24h = timezone.now()
-        video_last_24h = baker.make(Video, channel=channel, published_date=last_24h)
-
-        older_than_24h = last_24h - datetime.timedelta(hours=24, minutes=1)
+        older_than_24h = just_now - datetime.timedelta(hours=24, minutes=1)
         video_older_than_24h = baker.make(
-            Video, channel=channel, published_date=older_than_24h
+            Video, channel=self.channel, published_date=older_than_24h
         )
 
         url = reverse(
@@ -132,14 +130,15 @@ class CategoryDetailTestCase(TestCase):
         self.assertTrue(video_older_than_24h not in response.context["videos"])
 
     def test_return_last_week_videos_of_category_if_query_string_week(self):
-        channel = baker.make(Channel)
-        self.category.channels.add(channel)
-
         last_week = timezone.now() - datetime.timedelta(days=7)
         older_than_week = last_week - datetime.timedelta(minutes=1)
 
-        video_last_week = baker.make(Video, published_date=last_week)
-        older_than_week_video = baker.make(Video, published_date=older_than_week)
+        video_last_week = baker.make(
+            Video, channel=self.channel, published_date=last_week
+        )
+        older_than_week_video = baker.make(
+            Video, channel=self.channel, published_date=older_than_week
+        )
 
         base_url = reverse(
             "channels:category_details",
@@ -152,14 +151,15 @@ class CategoryDetailTestCase(TestCase):
         self.assertTrue(older_than_week_video not in response.context["videos"])
 
     def test_return_last_week_videos_of_category_if_query_string_all(self):
-        channel = baker.make(Channel)
-        self.category.channels.add(channel)
-
         last_week = timezone.now() - datetime.timedelta(days=7)
-        older_than_week = last_week - datetime.timedelta(minutes=1)
+        older_than_week = last_week - datetime.timedelta(minutes=10)
 
-        video_last_week = baker.make(Video, published_date=last_week)
-        older_than_week_video = baker.make(Video, published_date=older_than_week)
+        video_last_week = baker.make(
+            Video, channel=self.channel, published_date=last_week
+        )
+        older_than_week_video = baker.make(
+            Video, channel=self.channel, published_date=older_than_week
+        )
 
         base_url = reverse(
             "channels:category_details",
@@ -170,3 +170,22 @@ class CategoryDetailTestCase(TestCase):
 
         self.assertTrue(video_last_week in response.context["videos"])
         self.assertTrue(older_than_week_video in response.context["videos"])
+
+    def test_return_videos_only_of_category(self):
+        published_date = timezone.now()
+        category_video = baker.make(
+            Video, channel=self.channel, published_date=published_date
+        )
+
+        video_of_another_category = baker.make(
+            Video, title="Video of another category", published_date=published_date
+        )
+
+        url = reverse(
+            "channels:category_details",
+            args=(self.category.user.username, self.category.slug,),
+        )
+        response = self.client.get(url)
+
+        self.assertTrue(category_video in response.context["videos"])
+        self.assertTrue(video_of_another_category not in response.context["videos"])
