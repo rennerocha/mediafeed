@@ -64,7 +64,9 @@ class ChannelTestCase(TestCase):
 class VideoTestCase(TestCase):
     def setUp(self):
         self.channel = baker.make(Channel)
-        self.published_date = datetime.datetime(2020, 6, 12, 12, 38, 30)
+        self.published_date = datetime.datetime(
+            2020, 6, 12, 12, 38, 30, tzinfo=datetime.timezone.utc
+        )
 
     def test_saving_new_video(self):
         video = Video(
