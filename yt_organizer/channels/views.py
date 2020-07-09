@@ -8,10 +8,10 @@ from channels.models import Category, Video
 
 
 def category_details(request, username, slug):
-    if request.user.is_authenticated:
-        category = get_object_or_404(Category, slug=slug, user=request.user)
+    user = get_object_or_404(User, username=username)
+    if request.user.is_authenticated and user == request.user:
+        category = get_object_or_404(Category, slug=slug, user=user)
     else:
-        user = get_object_or_404(User, username=username)
         category = get_object_or_404(Category, slug=slug, user=user, public=True)
 
     videos_of_category = Video.objects.for_categories([category])

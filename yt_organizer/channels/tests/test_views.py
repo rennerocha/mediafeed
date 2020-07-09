@@ -77,6 +77,19 @@ class CategoryDetailAccessTestCase(TestCase):
         response = self.client.get(url)
         self.assertEqual(response.status_code, 200)
 
+    def test_access_public_category_of_another_user(self):
+        other_user = User.objects.create_user(
+            "otheruser", "otheruser@test.com", "otheruserpassword"
+        )
+        self.client.login(username=other_user.username, password="otheruserpassword")
+
+        url = reverse(
+            "channels:category_details",
+            args=(self.user.username, self.public_category.slug,),
+        )
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, 200)
+
 
 class CategoryDetailTestCase(TestCase):
     def setUp(self):
