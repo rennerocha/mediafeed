@@ -10,7 +10,7 @@ services:
     expose:
       - "8000"
     depends_on:
-      - db
+      - app-db
     env_file:
       - .env
     command: "/start_app.sh"
@@ -26,7 +26,7 @@ services:
     depends_on:
       - app
 
-  db:
+  app-db:
     image: postgres:12.3-alpine
     volumes:
       - postgres_data:/var/lib/postgresql/data/
