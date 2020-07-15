@@ -1,0 +1,21 @@
+version: "3.3"
+
+services:
+  nginx-proxy:
+    image: jwilder/nginx-proxy
+    ports:
+      - "80:80"
+    volumes:
+      - /var/run/docker.sock:/tmp/docker.sock:ro
+
+  app:
+    environment:
+      - VIRTUAL_HOST=app.production.domain
+
+  app-static:
+    environment:
+      - VIRTUAL_HOST=static.production.domain
+    ports:
+      - "8100:8100"
+    expose:
+      - "8100"
