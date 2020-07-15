@@ -11,6 +11,48 @@
 
     {% block extra_css %}
     <style>
+        html,
+        body {
+            font-size: 13px;
+        }
+
+        .card {
+            border-radius: 10px;
+            box-shadow: 0 3px 2px 0 hsla(0, 0%, 0%, 0.2);
+            min-height: 31em;
+            margin: 10px;
+        }
+
+        .card img {
+            border-radius: 10px 10px 0 0;
+            width: 100%;
+        }
+
+        .card-content {
+            padding: 0 1em 1em 1em;
+        }
+
+        .card-content a,
+        .card-content a:visited {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        .card-content a:hover {
+            text-decoration: underline;
+        }
+
+        .card-content h1 {
+            font-size: 1em;
+            font-weight: 700;
+        }
+
+        .card-content h2 {
+            color: darkgrey;
+            font-size: 0.8em;
+            font-weight: 700;
+        }
+
         #menu {
             background-color: #dde6d5;
         }

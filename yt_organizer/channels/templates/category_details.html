@@ -3,30 +3,33 @@
 {% block content %}
 
 <h1>{{ category.title }} - {{ selected_period }}</h1>
-<hr>
-<ul>
-    <li> <a href="?period=last_24h">Last 24h</a> |</li>
-    <li> <a href="?period=week">Last Week</a> |</li>
-    <li> <a href="?period=all">All</a></li>
-</ul>
-<hr>
+
+<div class="nav-period">
+    <ul>
+        <li> <a href="?period=last_24h">Last 24h</a> |</li>
+        <li> <a href="?period=week">Last Week</a> |</li>
+        <li> <a href="?period=all">All</a></li>
+    </ul>
+</div>
+
 {% for video in videos %}
 
 {% if forloop.counter0 == 0 or forloop.counter0|divisibleby:3 %}
 <div class="pure-g">
     {% endif %}
 
-    <div class="pure-u-1 pure-u-md-1-3">
-        <a href="{{ video.url }}" target="_blank">
-            <img src="{{video.thumbnail_image }}" alt="{{ video.title }}" width="75%">
-            <div>
-                <h5>{{ video.title }}</h5>
-                <p>{{ video.channel.title }}</p>
-                <p><small>{{ video.published_date }}</small></p>
+    <div class="pure-u-8-24">
+        <div class="card">
+            <a href="{{ video.url }}" target="_blank">
+                <img src="{{ video.thumbnail_image }}" alt="{{ video.title }}" />
+            </a>
+            <div class="card-content">
+                <h1><a href="{{ video.url }}" target="_blank">{{ video.title }}</a></h1>
+                <h2><a href="{{ video.channel.url }}" target="_blank">{{ video.channel.title }}</a></h2>
+                <h2>{{ video.published_date }}</h2>
             </div>
-        </a>
+        </div>
     </div>
-
     {% if forloop.counter|divisibleby:3 %}
 </div>
 {% endif %}
