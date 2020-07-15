@@ -22,7 +22,7 @@ def category_details(request, username, slug):
         "week": videos_of_category.last_week(),
         "last_24h": videos_of_category.last_24h(),
     }
-    videos = video_by_period.get(period, [])
+    videos = video_by_period.get(period, []).order_by("-published_date")
 
     # TODO - These lines needs to be have tests to ensure the context is correct
     period_labels = {"all": "All", "week": "This Week", "last_24h": "Last 24h"}

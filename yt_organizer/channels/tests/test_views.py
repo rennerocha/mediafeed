@@ -202,3 +202,30 @@ class CategoryDetailTestCase(TestCase):
 
         self.assertTrue(category_video in response.context["videos"])
         self.assertTrue(video_of_another_category not in response.context["videos"])
+
+    def test_return_videos_in_descending_published_date_order(self):
+        base_published_date = timezone.now()
+
+        oldest_video = baker.make(
+            Video,
+            channel=self.channel,
+            published_date=base_published_date - datetime.timedelta(hours=2),
+        )
+        video = baker.make(
+            Video,
+            channel=self.channel,
+            published_date=base_published_date - datetime.timedelta(hours=1),
+        )
+        newest_video = baker.make(
+            Video, channel=self.channel, published_date=base_published_date
+        )
+
+        url = reverse(
+            "channels:category_details",
+            args=(self.category.user.username, self.category.slug,),
+        )
+        response = self.client.get(url)
+
+        self.assertTrue(
+            response.context["videos"] == [newest_video, video, oldest_video]
+        )
