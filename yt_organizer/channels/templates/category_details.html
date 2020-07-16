@@ -2,15 +2,23 @@
 
 {% block content %}
 
-<h1>{{ category.title }} - {{ selected_period }}</h1>
+<nav>
+    {% for category in categories %}
+    {% if category == selected_category %}
+    <a class="pure-button button-selected" href="{{ category.get_absolute_url }}">{{ category.title }}</a>
+    {% else %}
+    <a class="pure-button button-not-selected" href="{{ category.get_absolute_url }}">{{ category.title }}</a>
+    {% endif %}
+    {% endfor %}
 
-<div class="nav-period">
-    <ul>
-        <li> <a href="?period=last_24h">Last 24h</a> |</li>
-        <li> <a href="?period=week">Last Week</a> |</li>
-        <li> <a href="?period=all">All</a></li>
-    </ul>
-</div>
+    <div class="nav-period">
+        <ul>
+            <li> <a href="?period=last_24h">Last 24h</a> |</li>
+            <li> <a href="?period=week">Last Week</a> |</li>
+            <li> <a href="?period=all">All</a></li>
+        </ul>
+    </div>
+</nav>
 
 {% for video in videos %}
 
