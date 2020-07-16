@@ -193,6 +193,15 @@ class CategoryTestCase(TestCase):
         )
         self.assertEqual(repr(category), f"<Category: {category.title}>")
 
+    def test_get_absolute_url(self):
+        category = Category.objects.create(
+            title="Category Title", public=True, user=self.user,
+        )
+        self.assertEquals(
+            category.get_absolute_url(),
+            f"/category/{self.user.username}/{category.slug}/",
+        )
+
     def test_new_category_create_automatic_slug(self):
         category = Category.objects.create(
             title="Category Title", public=True, user=self.user,

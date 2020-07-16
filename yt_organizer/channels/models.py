@@ -116,6 +116,14 @@ class Category(models.Model):
         self.slug = slugify(self.title)
         super().save(*args, **kwargs)
 
+    def get_absolute_url(self):
+        from django.urls import reverse
+
+        return reverse(
+            "channels:category_details",
+            kwargs={"username": self.user.username, "slug": self.slug},
+        )
+
 
 class Feed(models.Model):
     video = models.OneToOneField(Video, on_delete=models.CASCADE)
