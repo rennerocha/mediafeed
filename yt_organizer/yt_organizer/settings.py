@@ -113,5 +113,5 @@ STATIC_URL = config("STATIC_URL", default="/static/")
 BASE_YOUTUBE_FEED_URL = "https://www.youtube.com/feeds/videos.xml"
 
 CRONJOBS = [
-    ("* * * * *", "django.core.management.call_command", ["sync_channels"]),
+    ("*/30 * * * *", "django.core.management.call_command", ["sync_channels"]),
 ]
