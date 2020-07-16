@@ -14,11 +14,11 @@
 
 {% for video in videos %}
 
-{% if forloop.counter0 == 0 or forloop.counter0|divisibleby:3 %}
+{% if forloop.counter0 == 0 or forloop.counter0|divisibleby:4 %}
 <div class="pure-g">
     {% endif %}
 
-    <div class="pure-u-8-24">
+    <div class="pure-u-1 pure-u-sm-12-24 pure-u-md-6-24">
         <div class="card">
             <a href="{{ video.url }}" target="_blank">
                 <img src="{{ video.thumbnail_image }}" alt="{{ video.title }}" />
@@ -30,7 +30,7 @@
             </div>
         </div>
     </div>
-    {% if forloop.counter|divisibleby:3 %}
+    {% if forloop.counter|divisibleby:4 %}
 </div>
 {% endif %}
 
