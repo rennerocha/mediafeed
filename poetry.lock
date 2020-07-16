@@ -150,6 +150,17 @@ bcrypt = ["bcrypt"]
 
 [[package]]
 category = "main"
+description = "dead simple crontab powered job scheduling for django"
+name = "django-crontab"
+optional = false
+python-versions = "*"
+version = "0.7.1"
+
+[package.dependencies]
+Django = ">=1.8"
+
+[[package]]
+category = "main"
 description = "WSGI HTTP Server for UNIX"
 name = "gunicorn"
 optional = false
@@ -510,7 +521,7 @@ python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*"
 version = "0.12.0"
 
 [metadata]
-content-hash = "846302d4aecc7e62e7e7cbfc1056833031b7c171203311aa22c610749b0e2900"
+content-hash = "78a4fb51b5afe4d2ec9a3121de79c29a2bbd2b8574bd07b1d913eee876f3d2d2"
 python-versions = "^3.7"
 
 [metadata.files]
@@ -569,6 +580,9 @@ decorator = [
 django = [
     {file = "Django-3.0.7-py3-none-any.whl", hash = "sha256:e1630333248c9b3d4e38f02093a26f1e07b271ca896d73097457996e0fae12e8"},
     {file = "Django-3.0.7.tar.gz", hash = "sha256:5052b34b34b3425233c682e0e11d658fd6efd587d11335a0203d827224ada8f2"},
+]
+django-crontab = [
+    {file = "django-crontab-0.7.1.tar.gz", hash = "sha256:1201810a212460aaaa48eb6a766738740daf42c1a4f6aafecfb1525036929236"},
 ]
 gunicorn = [
     {file = "gunicorn-20.0.4-py2.py3-none-any.whl", hash = "sha256:cd4a810dd51bf497552cf3f863b575dabd73d6ad6a91075b65936b151cbf4f9c"},

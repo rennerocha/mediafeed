@@ -27,6 +27,7 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    "django_crontab",
     "channels",
 ]
 
@@ -110,3 +111,7 @@ STATIC_ROOT = config("STATIC_ROOT", default="/static/")
 STATIC_URL = config("STATIC_URL", default="/static/")
 
 BASE_YOUTUBE_FEED_URL = "https://www.youtube.com/feeds/videos.xml"
+
+CRONJOBS = [
+    ("* * * * *", "django.core.management.call_command", ["sync_channels"]),
+]

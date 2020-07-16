@@ -9,7 +9,7 @@ RUN apt-get update && apt-get install -y cron
 COPY poetry.lock pyproject.toml /
 RUN poetry config virtualenvs.create false && poetry install --no-dev
 
-COPY start_app.sh sync_channels.sh /
+COPY start_app.sh /
 
 ENV APP_ROOT /yt_organizer
 
