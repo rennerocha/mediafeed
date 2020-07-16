@@ -90,6 +90,32 @@ class CategoryDetailAccessTestCase(TestCase):
         response = self.client.get(url)
         self.assertEqual(response.status_code, 200)
 
+    def test_context_has_list_of_all_categories_of_logged_user(self):
+        self.client.login(username=self.user.username, password="userpassword")
+
+        url = reverse(
+            "channels:category_details",
+            args=(self.user.username, self.public_category.slug,),
+        )
+        response = self.client.get(url)
+
+        self.assertTrue("categories" in response.context)
+
+        self.assertTrue(
+            list(response.context["categories"])
+            == [self.private_category, self.public_category]
+        )
+
+    def test_context_has_list_with_only_selected_category_for_not_logged_user(self):
+        url = reverse(
+            "channels:category_details",
+            args=(self.user.username, self.public_category.slug,),
+        )
+        response = self.client.get(url)
+
+        self.assertTrue("categories" in response.context)
+        self.assertTrue(response.context["categories"] == [self.public_category])
+
 
 class CategoryDetailTestCase(TestCase):
     def setUp(self):
