@@ -106,7 +106,8 @@ class CategoryDetailAccessTestCase(TestCase):
             == [self.private_category, self.public_category]
         )
 
-    def test_context_has_list_with_only_selected_category_for_not_logged_user(self):
+    def test_context_has_list_of_public_categories_for_not_logged_user(self):
+        another_public_category = baker.make(Category, public=True, user=self.user)
         url = reverse(
             "channels:category_details",
             args=(self.user.username, self.public_category.slug,),
@@ -114,7 +115,10 @@ class CategoryDetailAccessTestCase(TestCase):
         response = self.client.get(url)
 
         self.assertTrue("categories" in response.context)
-        self.assertTrue(response.context["categories"] == [self.public_category])
+        self.assertTrue(
+            list(response.context["categories"])
+            == [self.public_category, another_public_category]
+        )
 
 
 class CategoryDetailTestCase(TestCase):

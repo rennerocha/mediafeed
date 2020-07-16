@@ -16,7 +16,7 @@ def category_details(request, username, slug):
         selected_category = get_object_or_404(
             Category, slug=slug, user=user, public=True
         )
-        categories = [selected_category]
+        categories = Category.objects.filter(user=user, public=True).order_by("title")
 
     videos_of_category = Video.objects.for_categories([selected_category])
 
