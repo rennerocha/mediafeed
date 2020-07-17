@@ -21,15 +21,26 @@
             margin: 10px;
         }
 
-        nav .button-selected,
+        nav .nav-periods {
+            padding-top: 5px;
+        }
+
+        nav .button-category-selected,
+        nav .button-period-selected,
         nav .button-not-selected {
             border-radius: 4px;
             text-shadow: 0 1px 1px rgba(0, 0, 0, 0.2);
         }
 
-        nav .button-selected {
+        nav .button-category-selected {
             color: white;
             background: rgb(28, 184, 65);
+            pointer-events: none;
+        }
+
+        nav .button-period-selected {
+            color: white;
+            background: rgb(223, 117, 20);
             pointer-events: none;
         }
 

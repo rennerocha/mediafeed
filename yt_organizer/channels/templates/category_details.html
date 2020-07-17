@@ -3,20 +3,25 @@
 {% block content %}
 
 <nav>
-    {% for category in categories %}
-    {% if category == selected_category %}
-    <a class="pure-button button-selected" href="{{ category.get_absolute_url }}">{{ category.title }}</a>
-    {% else %}
-    <a class="pure-button button-not-selected" href="{{ category.get_absolute_url }}">{{ category.title }}</a>
-    {% endif %}
-    {% endfor %}
+    <div class="nav-categories">
+        {% for category in categories %}
+        {% if category == selected_category %}
+        <a class="pure-button button-category-selected"
+            href="{{ category.get_absolute_url }}?period={{ period }}">{{ category.title }}</a>
+        {% else %}
+        <a class="pure-button button-not-selected"
+            href="{{ category.get_absolute_url }}?period={{ period }}">{{ category.title }}</a>
+        {% endif %}
+        {% endfor %}
+    </div>
 
-    <div class="nav-period">
-        <ul>
-            <li> <a href="?period=last_24h">Last 24h</a> |</li>
-            <li> <a href="?period=week">Last Week</a> |</li>
-            <li> <a href="?period=all">All</a></li>
-        </ul>
+    <div class="nav-periods">
+        <a class="pure-button {% if period == 'last_24h' %}button-period-selected{% else %}button-not-selected{% endif %}"
+            href="?period=last_24h">Last 24h</a>
+        <a class="pure-button {% if period == "week" %}button-period-selected{% else %}button-not-selected{% endif %}"
+            href="?period=week">Last Week</a>
+        <a class="pure-button {% if period == "all" %}button-period-selected{% else %}button-not-selected{% endif %}"
+            href="?period=all">All</a>
     </div>
 </nav>
 
