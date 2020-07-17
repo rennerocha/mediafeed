@@ -198,8 +198,7 @@ class CategoryTestCase(TestCase):
             title="Category Title", public=True, user=self.user,
         )
         self.assertEquals(
-            category.get_absolute_url(),
-            f"/category/{self.user.username}/{category.slug}/",
+            category.get_absolute_url(), f"/{self.user.username}/{category.slug}/",
         )
 
     def test_new_category_create_automatic_slug(self):
