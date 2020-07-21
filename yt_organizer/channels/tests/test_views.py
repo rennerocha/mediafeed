@@ -263,9 +263,6 @@ class CategoryDetailTestCase(TestCase):
 
 
 class CategoryDetailAddChannelTestCase(TestCase):
-    # logged user accessing own category can see
-    # logged user accessing other user category can not see
-    # not logged user can not see
     def setUp(self):
         self.user = User.objects.create_user("user", "user@test.com", "userpassword")
         self.category = baker.make(Category, public=True, user=self.user)
