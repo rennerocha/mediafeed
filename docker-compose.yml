@@ -6,7 +6,7 @@ services:
     container_name: yt-organizer-app
     restart: always
     volumes:
-      - ./static:/static
+      - static_data:/static
     expose:
       - "8000"
     depends_on:
@@ -19,7 +19,7 @@ services:
     image: nginx:latest
     container_name: yt-organizer-app-static
     volumes:
-      - ./static:/usr/share/nginx/html
+      - static_data:/usr/share/nginx/html
     ports:
       - "8080:80"
     env_file:
@@ -36,3 +36,4 @@ services:
 
 volumes:
   postgres_data:
+  static_data:
