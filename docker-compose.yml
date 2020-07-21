@@ -18,11 +18,12 @@ services:
   app-static:
     image: nginx:latest
     container_name: yt-organizer-app-static
-    ports:
-      - "8000:8000"
     volumes:
-      - ./config/nginx:/etc/nginx/conf.d
-      - ./static:/static
+      - ./static:/usr/share/nginx/html
+    ports:
+      - "8080:80"
+    env_file:
+      - .env
     depends_on:
       - app
 

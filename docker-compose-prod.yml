@@ -15,7 +15,5 @@ services:
   app-static:
     environment:
       - VIRTUAL_HOST=static.production.domain
-    ports:
-      - "8100:8100"
     expose:
-      - "8100"
+      - "8080"
