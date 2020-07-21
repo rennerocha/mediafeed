@@ -9,92 +9,9 @@
     <link rel="stylesheet" href="https://unpkg.com/purecss@2.0.3/build/pure-min.css"
         integrity="sha384-cg6SkqEOCV1NbJoCu11+bm0NvBRc8IYLRGXkmNrqUBfTjmMYwNKPWBTIKyw9mHNJ" crossorigin="anonymous">
     <link rel="stylesheet" href="https://unpkg.com/purecss@2.0.3/build/grids-responsive-min.css" />
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
 
-    {% block extra_css %}
-    <style>
-        html,
-        body {
-            font-size: 13px;
-            background-color: #f3f7f9;
-        }
-
-        nav {
-            margin: 10px;
-        }
-
-        nav .nav-periods {
-            padding-top: 5px;
-        }
-
-        nav .button-category-selected,
-        nav .button-period-selected,
-        nav .button-not-selected {
-            border-radius: 4px;
-            text-shadow: 0 1px 1px rgba(0, 0, 0, 0.2);
-        }
-
-        nav .button-category-selected {
-            color: white;
-            background: rgb(28, 184, 65);
-            pointer-events: none;
-        }
-
-        nav .button-period-selected {
-            color: white;
-            background: rgb(223, 117, 20);
-            pointer-events: none;
-        }
-
-        .card {
-            border-radius: 10px;
-            box-shadow: 0 3px 2px 0 hsla(0, 0%, 0%, 0.2);
-            min-height: 31em;
-            margin: 10px;
-        }
-
-        .card img {
-            border-radius: 10px 10px 0 0;
-            width: 100%;
-        }
-
-        .card-content {
-            padding: 0 1em 1em 1em;
-        }
-
-        .card-content a,
-        .card-content a:visited {
-            text-decoration: none;
-            color: inherit;
-        }
-
-        .card-content a:hover {
-            text-decoration: underline;
-        }
-
-        .card-content h1 {
-            font-size: 1em;
-            font-weight: 700;
-        }
-
-        .card-content h2 {
-            color: darkgrey;
-            font-size: 0.8em;
-            font-weight: 700;
-        }
-
-        #menu {
-            background-color: #dde6d5;
-        }
-
-        ul {
-            list-style-type: square;
-        }
-
-        li {
-            display: inline;
-        }
-    </style>
-    {% endblock %}
+    {% block extra_css %}{% endblock %}
 </head>
 
 <body>
