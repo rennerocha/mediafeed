@@ -16,6 +16,10 @@
     </div>
 
     <div class="nav-periods">
+        {% if request.user == user %}
+        <button id="add-channel-button" class="pure-button button-add">+ Add Channel</button>
+        {% endif %}
+
         <a class="pure-button {% if period == 'last_24h' %}button-period-selected{% else %}button-not-selected{% endif %}"
             href="?period=last_24h">Last 24h</a>
         <a class="pure-button {% if period == "week" %}button-period-selected{% else %}button-not-selected{% endif %}"
@@ -23,7 +27,20 @@
         <a class="pure-button {% if period == "all" %}button-period-selected{% else %}button-not-selected{% endif %}"
             href="?period=all">All</a>
     </div>
+
+    {% if request.user == user %}
+    <form id="add-channel-form" class="pure-form pure-g pure-u-1" method="POST">
+        {% csrf_token %}
+        <fieldset>
+            <div class="pure-control-group">
+                <input type="text" class="pure-input-1-3" placeholder="Channel URL" />
+                <button id="add-channel-button" class="pure-button button-add">Add</button>
+            </div>
+        </fieldset>
+    </form>
+    {% endif %}
 </nav>
+
 
 {% for video in videos %}
 
@@ -49,4 +66,14 @@
 
 {% endfor %}
 
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    document.getElementById("add-channel-form").hidden = false;
+
+    document.getElementById("add-channel-button").onclick = function () {
+        document.getElementById("add-channel-form").hidden = false;
+    }
+</script>
 {% endblock %}

@@ -5,6 +5,7 @@ from django.test import TestCase
 from django.urls import reverse
 from django.utils import timezone
 from model_bakery import baker
+from parsel import Selector
 
 from channels.models import Category, Channel, Video
 
@@ -259,3 +260,53 @@ class CategoryDetailTestCase(TestCase):
         self.assertTrue(
             response.context["videos"] == [newest_video, video, oldest_video]
         )
+
+
+class CategoryDetailAddChannelTestCase(TestCase):
+    # logged user accessing own category can see
+    # logged user accessing other user category can not see
+    # not logged user can not see
+    def setUp(self):
+        self.user = User.objects.create_user("user", "user@test.com", "userpassword")
+        self.category = baker.make(Category, public=True, user=self.user)
+
+    def test_logged_user_has_add_channel_form_available_on_own_category(self):
+        self.client.login(username=self.user.username, password="userpassword")
+        url = reverse(
+            "channels:category_details",
+            args=(self.category.user.username, self.category.slug,),
+        )
+        response = self.client.get(url)
+        selector = Selector(text=response.content.decode("utf-8"))
+
+        self.assertTrue(selector.css("#add-channel-form"))
+        self.assertTrue(selector.css("#add-channel-button"))
+
+    def test_logged_user_has_not_add_channel_form_available_on_other_user_category(
+        self,
+    ):
+        self.client.login(username=self.user.username, password="userpassword")
+
+        other_user_category = baker.make(Category, public=True)
+        self.assertNotEqual(other_user_category.user, self.user)
+
+        url = reverse(
+            "channels:category_details",
+            args=(other_user_category.user.username, other_user_category.slug,),
+        )
+        response = self.client.get(url)
+        selector = Selector(text=response.content.decode("utf-8"))
+
+        self.assertFalse(selector.css("#add-channel-form"))
+        self.assertFalse(selector.css("#add-channel-button"))
+
+    def test_not_logged_user_has_no_access_to_add_channel_form(self):
+        url = reverse(
+            "channels:category_details",
+            args=(self.category.user.username, self.category.slug,),
+        )
+        response = self.client.get(url)
+        selector = Selector(text=response.content.decode("utf-8"))
+
+        self.assertFalse(selector.css("#add-channel-form"))
+        self.assertFalse(selector.css("#add-channel-button"))

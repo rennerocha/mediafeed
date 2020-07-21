@@ -29,6 +29,7 @@ def category_details(request, username, slug):
     videos = video_by_period.get(period, []).order_by("-published_date")
 
     context = {
+        "user": user,
         "selected_category": selected_category,
         "period": period,
         "categories": categories,
