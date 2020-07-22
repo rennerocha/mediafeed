@@ -12,6 +12,7 @@ from django.utils.text import slugify
 from parsel import Selector
 
 from channels.managers import VideoQuerySet
+from channels.utils import get_channel_title
 
 
 class Channel(models.Model):
@@ -27,6 +28,9 @@ class Channel(models.Model):
         return self.title
 
     def save(self, *args, **kwargs):
+        if not self.title:
+            self.title = get_channel_title(self.url)
+
         match = re.search(
             r"user\/(?P<user_id>.*)|channel\/(?P<channel_id>.*)", self.url,
         )

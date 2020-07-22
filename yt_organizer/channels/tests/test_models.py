@@ -1,4 +1,5 @@
 import datetime
+from unittest.mock import patch
 
 from django.conf import settings
 from django.contrib.auth.models import User
@@ -43,6 +44,15 @@ class ChannelTestCase(TestCase):
         )
         self.assertEqual(
             channel.feed_url, f"{settings.BASE_YOUTUBE_FEED_URL}?user=arduinoteam",
+        )
+
+    @patch("channels.models.get_channel_title", return_value="Channel Title")
+    def test_try_to_get_channel_title_if_not_provided(self, get_channel_title_mock):
+        channel = Channel.objects.create(
+            url="https://www.youtube.com/user/arduinoteam",
+        )
+        get_channel_title_mock.assert_called_with(
+            "https://www.youtube.com/user/arduinoteam"
         )
 
     def test_channel_searchable_by_video(self):
