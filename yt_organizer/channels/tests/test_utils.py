@@ -1,8 +1,9 @@
 from unittest.mock import Mock, patch
 
+from django.conf import settings
 from django.test import TestCase
 
-from channels.utils import get_channel_title
+from channels.utils import get_channel_feed_url, get_channel_title
 
 YOUTUBE_CHANNEL_CONTENT = b"""<html>
     <head>
@@ -45,3 +46,27 @@ class ChannelGetTitleTestCase(TestCase):
         channel_title = get_channel_title(url=self.channel_url)
 
         self.assertTrue(channel_title is None)
+
+
+class ChannelGetFeedURLTestCase(TestCase):
+    def setUp(self):
+        self.channel_url = "http://channel.url"
+
+    def test_feed_url_from_channel_url(self):
+        channel_url = "https://www.youtube.com/channel/UCsn8UgBuRxGGqKmrAy5d3gA"
+
+        feed_url = get_channel_feed_url(channel_url)
+
+        self.assertEqual(
+            f"{settings.BASE_YOUTUBE_FEED_URL}?channel_id=UCsn8UgBuRxGGqKmrAy5d3gA",
+            feed_url,
+        )
+
+    def test_feed_url_from_user_url(self):
+        channel_url = "https://www.youtube.com/user/arduinoteam"
+
+        feed_url = get_channel_feed_url(channel_url)
+
+        self.assertEqual(
+            f"{settings.BASE_YOUTUBE_FEED_URL}?user=arduinoteam", feed_url,
+        )

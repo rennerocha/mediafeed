@@ -12,7 +12,7 @@ from django.utils.text import slugify
 from parsel import Selector
 
 from channels.managers import VideoQuerySet
-from channels.utils import get_channel_title
+from channels.utils import get_channel_feed_url, get_channel_title
 
 
 class Channel(models.Model):
@@ -31,21 +31,8 @@ class Channel(models.Model):
         if not self.title:
             self.title = get_channel_title(self.url)
 
-        match = re.search(
-            r"user\/(?P<user_id>.*)|channel\/(?P<channel_id>.*)", self.url,
-        )
-        if match:
-            match_dict = match.groupdict()
-            user_id = match_dict.get("user_id")
-            if user_id is not None:
-                params = {"user": user_id}
-
-            channel_id = match_dict.get("channel_id")
-            if channel_id is not None:
-                params = {"channel_id": channel_id}
-
-            params = urlencode(params)
-            self.feed_url = f"{settings.BASE_YOUTUBE_FEED_URL}?{params}"
+        if not self.feed_url:
+            self.feed_url = get_channel_feed_url(self.url)
 
         super().save(*args, **kwargs)
 

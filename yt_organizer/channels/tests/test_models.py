@@ -1,7 +1,6 @@
 import datetime
 from unittest.mock import patch
 
-from django.conf import settings
 from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
 from django.test import TestCase
@@ -28,22 +27,17 @@ class ChannelTestCase(TestCase):
         channel = baker.make(Channel)
         self.assertEqual(repr(channel), f"<Channel: {channel.title}>")
 
-    def test_create_channel_feed_url_on_creation(self):
+    @patch(
+        "channels.models.get_channel_feed_url", return_value="http://channel.feed.url"
+    )
+    def test_try_to_get_channel_feed_url_if_not_provided(
+        self, get_channel_feed_url_mock
+    ):
         channel = Channel.objects.create(
-            title="Channel Title",
-            url="https://www.youtube.com/channel/UCsn8UgBuRxGGqKmrAy5d3gA",
+            url="https://www.youtube.com/user/arduinoteam",
         )
-        self.assertEqual(
-            channel.feed_url,
-            f"{settings.BASE_YOUTUBE_FEED_URL}?channel_id=UCsn8UgBuRxGGqKmrAy5d3gA",
-        )
-
-    def test_create_user_channel_feed_url_on_creation(self):
-        channel = Channel.objects.create(
-            title="Channel Title", url="https://www.youtube.com/user/arduinoteam",
-        )
-        self.assertEqual(
-            channel.feed_url, f"{settings.BASE_YOUTUBE_FEED_URL}?user=arduinoteam",
+        get_channel_feed_url_mock.assert_called_with(
+            "https://www.youtube.com/user/arduinoteam"
         )
 
     @patch("channels.models.get_channel_title", return_value="Channel Title")
