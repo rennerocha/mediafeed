@@ -31,6 +31,11 @@ nav .button-period-selected {
     pointer-events: none;
 }
 
+.messages {
+    font-weight: 900;
+    font-size: 1.1em;
+}
+
 .card {
     border-radius: 10px;
     box-shadow: 0 3px 2px 0 hsla(0, 0%, 0%, 0.2);

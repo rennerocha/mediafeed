@@ -1,10 +1,11 @@
 import datetime
 
+from django.contrib import messages
 from django.contrib.auth.models import User
 from django.http import HttpResponse
-from django.shortcuts import get_object_or_404, render
+from django.shortcuts import get_object_or_404, redirect, render
 
-from channels.models import Category, Video
+from channels.models import Category, Channel, Video
 
 
 def category_details(request, username, slug):
@@ -37,3 +38,22 @@ def category_details(request, username, slug):
     }
 
     return render(request, "category_details.html", context=context)
+
+
+def add_channel(request):
+    if request.method == "POST":
+        category_id = request.POST.get("category_id")
+        current_url = request.POST.get("current_url")
+        channel_url = request.POST.get("url")
+
+        channel = Channel.objects.create(url=channel_url)
+        channel.sync_videos()
+
+        messages.success(
+            request, f'Channel "{channel.title}" has been successfully added.'
+        )
+
+        category = Category.objects.get(id=category_id)
+        category.channels.add(channel)
+
+        return redirect(current_url)

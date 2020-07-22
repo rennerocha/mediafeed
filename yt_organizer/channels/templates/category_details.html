@@ -29,18 +29,28 @@
     </div>
 
     {% if request.user == user %}
-    <form id="add-channel-form" class="pure-form pure-g pure-u-1" method="POST">
+    <form action="{% url 'channels:add_channel' %}" id="add-channel-form" class="pure-form pure-g pure-u-1"
+        method="POST">
         {% csrf_token %}
         <fieldset>
             <div class="pure-control-group">
-                <input type="text" class="pure-input-1-3" placeholder="Channel URL" />
-                <button id="add-channel-button" class="pure-button button-add">Add</button>
+                <input type="hidden" name="current_url" value="{{ request.get_full_path }}" />
+                <input type="hidden" name="category_id" value="{{ selected_category.id }}" />
+                <input type="text" name="url" class="pure-input-1-3" placeholder="Channel URL" />
+                <button id="add-channel-button" type="submit" class="pure-button button-add">Add</button>
             </div>
         </fieldset>
     </form>
     {% endif %}
 </nav>
 
+{% if messages %}
+<ul class="messages">
+    {% for message in messages %}
+    <li>{{ message }}</li>
+    {% endfor %}
+</ul>
+{% endif %}
 
 {% for video in videos %}
 
@@ -70,7 +80,7 @@
 
 {% block extra_js %}
 <script>
-    document.getElementById("add-channel-form").hidden = false;
+    document.getElementById("add-channel-form").hidden = true;
 
     document.getElementById("add-channel-button").onclick = function () {
         document.getElementById("add-channel-form").hidden = false;
