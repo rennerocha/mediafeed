@@ -39,8 +39,22 @@ nav .button-period-selected {
 .card {
     border-radius: 10px;
     box-shadow: 0 3px 2px 0 hsla(0, 0%, 0%, 0.2);
-    min-height: 31em;
+    min-height: 30em;
     margin: 10px;
+}
+
+@media (max-width: 568px) {
+    .card {
+        min-height: initial;
+    }
+
+    nav a, nav button {
+        margin-bottom: 2px;
+    }
+
+    input {
+        width: 100% !important;
+    }
 }
 
 .card img {
