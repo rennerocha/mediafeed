@@ -1,4 +1,5 @@
-Simple application to help me organize my YouTube subscriptions by categories.
+This application allows you to organize your media subscriptions (currently only YouTube channels)
+into categories to make it easier to access the content you want.
 
 Main requirements
 =================

@@ -3,7 +3,7 @@ version: "3.3"
 services:
   app:
     build: .
-    container_name: yt-organizer-app
+    container_name: mediafeed--app
     restart: always
     volumes:
       - static_data:/static
@@ -17,7 +17,8 @@ services:
 
   app-static:
     image: nginx:latest
-    container_name: yt-organizer-app-static
+    container_name: mediafeed-app-static
+    restart: always
     volumes:
       - static_data:/usr/share/nginx/html
     ports:

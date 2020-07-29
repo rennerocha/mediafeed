@@ -11,12 +11,12 @@ RUN poetry config virtualenvs.create false && poetry install --no-dev
 
 COPY start_app.sh /
 
-ENV APP_ROOT /yt_organizer
+ENV APP_ROOT /mediafeed
 
 RUN mkdir ${APP_ROOT}
 WORKDIR ${APP_ROOT}
 
 EXPOSE 8000
-ADD yt_organizer/ ${APP_ROOT}
+ADD mediafeed/ ${APP_ROOT}
 
-CMD ["gunicorn", "--bind", "0.0.0.0:8000", "yt_organizer.wsgi"]
+CMD ["gunicorn", "--bind", "0.0.0.0:8000", "mediafeed.wsgi"]
