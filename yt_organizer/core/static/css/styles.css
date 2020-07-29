@@ -83,14 +83,19 @@ nav .button-period-selected {
     font-weight: 700;
 }
 
-#menu {
-    background-color: #dde6d5;
-}
-
 ul {
     list-style-type: square;
 }
 
 li {
     display: inline;
+}
+
+.menu-brand {
+    font-size: 2.2em;
+    font-weight: 900;
+}
+
+.menu-option {
+    font-size: 1.3em;
 }
