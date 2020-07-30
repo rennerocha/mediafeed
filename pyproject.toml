@@ -1,5 +1,5 @@
 [tool.poetry]
-name = "yt-organizer"
+name = "mediafeed"
 version = "0.1.0"
 description = ""
 authors = ["Renne Rocha <renne@rennerocha.com>"]

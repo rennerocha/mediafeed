@@ -20,18 +20,18 @@
 
         <div class="pure-u-16-24">
             <div id="menu" class="pure-menu pure-menu-horizontal">
-                <a href="#" class="pure-menu-heading pure-menu-link">YouTube Organizer</a>
+                <a href="" class="menu-brand pure-menu-heading pure-menu-link">MediaFeed</a>
 
                 <ul class="pure-menu-list">
                     {% if request.user.is_authenticated %}
-                    <li class="pure-menu-item">
+                    <li class="menu-option pure-menu-item">
                         <a href="" class="pure-menu-link">Log out</a>
                     </li>
                     {% else %}
-                    <li class="pure-menu-item">
+                    <li class="menu-option pure-menu-item">
                         <a href="" class="pure-menu-link">Sign in</a>
                     </li>
-                    <li class="pure-menu-item">
+                    <li class="menu-option pure-menu-item">
                         <a href="" class="pure-menu-link">Sign Up</a>
                     </li>
                     {% endif %}

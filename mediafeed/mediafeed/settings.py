@@ -42,7 +42,7 @@ MIDDLEWARE = [
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
 ]
 
-ROOT_URLCONF = "yt_organizer.urls"
+ROOT_URLCONF = "mediafeed.urls"
 
 TEMPLATES = [
     {
@@ -60,7 +60,7 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = "yt_organizer.wsgi.application"
+WSGI_APPLICATION = "mediafeed.wsgi.application"
 
 
 # Database
