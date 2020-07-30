@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<nav>
+    <div class="nav-categories">
+        {% for category in categories %}
+        <a class="pure-button button-not-selected"
+            href="{{ category.get_absolute_url }}?period={{ period }}">{{ category.title }}</a>
+        {% endfor %}
+    </div>
+
+    <div class="nav-periods">
+        <a class="pure-button {% if period == 'last_24h' %}button-period-selected{% else %}button-not-selected{% endif %}"
+            href="?period=last_24h">Last 24h</a>
+        <a class="pure-button {% if period == "week" %}button-period-selected{% else %}button-not-selected{% endif %}"
+            href="?period=week">Last Week</a>
+        <a class="pure-button {% if period == "all" %}button-period-selected{% else %}button-not-selected{% endif %}"
+            href="?period=all">All</a>
+    </div>
+</nav>
+
+{% for video in videos %}
+
+{% if forloop.counter0 == 0 or forloop.counter0|divisibleby:4 %}
+<div class="pure-g">
+    {% endif %}
+
+    <div class="pure-u-1 pure-u-sm-12-24 pure-u-md-6-24">
+        <div class="card">
+            <a href="{{ video.url }}" target="_blank">
+                <img src="{{ video.thumbnail_image }}" alt="{{ video.title }}" />
+            </a>
+            <div class="card-content">
+                <h1><a href="{{ video.url }}" target="_blank">{{ video.title }}</a></h1>
+                <h2><a href="{{ video.channel.url }}" target="_blank">{{ video.channel.title }}</a></h2>
+                <h2>{{ video.published_date }}</h2>
+            </div>
+        </div>
+    </div>
+    {% if forloop.counter|divisibleby:4 %}
+</div>
+{% endif %}
+
+{% endfor %}
+
+{% endblock %}

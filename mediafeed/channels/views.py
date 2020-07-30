@@ -1,8 +1,6 @@
-import datetime
-
 from django.contrib import messages
 from django.contrib.auth.models import User
-from django.http import HttpResponse
+from django.http import Http404
 from django.shortcuts import get_object_or_404, redirect, render
 
 from channels.models import Category, Channel, Video
@@ -38,6 +36,27 @@ def category_details(request, username, slug):
     }
 
     return render(request, "category_details.html", context=context)
+
+
+def user_details(request, username):
+    user = get_object_or_404(User, username=username)
+    categories = []
+
+    if request.user == user:
+        ...
+    else:
+        categories = Category.objects.filter(user=user, public=True).order_by("title")
+        if not categories:
+            raise Http404()
+
+    videos = Video.objects.for_categories(categories)
+
+    context = {
+        "categories": categories,
+        "videos": videos,
+    }
+
+    return render(request, "user_details.html", context=context)
 
 
 def add_channel(request):

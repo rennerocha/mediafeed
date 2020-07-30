@@ -299,3 +299,95 @@ class CategoryDetailAddChannelTestCase(TestCase):
 
         self.assertFalse(selector.css("#add-channel-form"))
         self.assertFalse(selector.css("#add-channel-button"))
+
+
+class NotLoggedUserDetailsTestCase(TestCase):
+    def test_accessing_non_existing_user(self):
+        url = reverse("channels:user_details", args=("i_do_not_exist",))
+
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, 404)
+
+    def test_accessing_user_without_public_category(self):
+        user = User.objects.create_user("user", "user@test.com", "userpassword")
+        baker.make(Category, user=user, public=False)
+        url = reverse("channels:user_details", args=(user,))
+
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, 404)
+
+    def test_accessing_user_with_public_category(self):
+        user = User.objects.create_user("user", "user@test.com", "userpassword")
+        baker.make(Category, user=user, public=True)
+        url = reverse("channels:user_details", args=(user,))
+
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, 200)
+
+    def test_has_public_categories_list_on_context(self):
+        user = User.objects.create_user("user", "user@test.com", "userpassword")
+        public_category = baker.make(Category, user=user, public=True)
+        private_category = baker.make(Category, user=user, public=False)
+
+        url = reverse("channels:user_details", args=(user,))
+        response = self.client.get(url)
+
+        self.assertTrue("categories" in response.context)
+        categories = response.context["categories"]
+        self.assertTrue(len(categories) == 1)
+        self.assertTrue(public_category in categories)
+
+    def test_has_videos_list_of_public_categories_on_context(self):
+        user = User.objects.create_user("user", "user@test.com", "userpassword")
+        public_category = baker.make(Category, user=user, public=True)
+        public_channel = baker.make(Channel)
+        public_category.channels.add(public_channel)
+        public_video = baker.make(Video, channel=public_channel)
+
+        private_category = baker.make(Category, user=user, public=False)
+        private_channel = baker.make(Channel)
+        private_category.channels.add(private_channel)
+        private_video = baker.make(Video, channel=private_channel)
+
+        url = reverse("channels:user_details", args=(user,))
+        response = self.client.get(url)
+
+        self.assertTrue("videos" in response.context)
+        videos = response.context["videos"]
+        self.assertTrue(len(videos) == 1)
+        self.assertTrue(public_video in videos)
+
+
+class LoggedUserDetailsTestCase(TestCase):
+    def setUp(self):
+        self.user = User.objects.create_user("user", "user@test.com", "userpassword")
+        self.client.login(username=self.user.username, password="userpassword")
+
+    def test_accessing_non_existing_user(self):
+        url = reverse("channels:user_details", args=("i_do_not_exist",))
+
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, 404)
+
+    def test_accessing_logger_user(self):
+        url = reverse("channels:user_details", args=(self.user.username,))
+
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, 200)
+
+    def test_accessing_other_user_without_public_category(self):
+        other_user = baker.make(User)
+        baker.make(Category, user=other_user, public=False)
+        url = reverse("channels:user_details", args=(other_user,))
+
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, 404)
+
+    def test_accessing_other_user_with_public_category(self):
+        other_user = baker.make(User)
+        baker.make(Category, user=other_user, public=True)
+        url = reverse("channels:user_details", args=(other_user,))
+
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, 200)
+
