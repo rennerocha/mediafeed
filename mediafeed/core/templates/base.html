@@ -6,15 +6,30 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="https://unpkg.com/purecss@2.0.3/build/pure-min.css"
-        integrity="sha384-cg6SkqEOCV1NbJoCu11+bm0NvBRc8IYLRGXkmNrqUBfTjmMYwNKPWBTIKyw9mHNJ" crossorigin="anonymous">
-    <link rel="stylesheet" href="https://unpkg.com/purecss@2.0.3/build/grids-responsive-min.css" />
     <link rel="stylesheet" href="{% static 'css/styles.css' %}">
 
     {% block extra_css %}{% endblock %}
 </head>
 
 <body>
+    <header id="top-header">
+        <div class="top-header--logo">
+            <a href="/">MediaFeed<span>.cc</span></a>
+        </div>
+        <div class="top-header--links">
+            {% if request.user.is_authenticated %}
+            <a href="">Sign Out</a>
+            {% else %}
+            <a href="">Sign Up</a>
+            <a href="">Sign In</a>
+            {% endif %}
+        </div>
+    </header>
+
+    <main>
+    </main>
+{% comment %}
+
     <div class="pure-g">
         <div class="pure-u-4-24"></div>
 
@@ -50,6 +65,8 @@
         <div class="pure-u-4-24"></div>
     </div>
     {% block extra_js %}{% endblock %}
+{% endcomment %}
+
 </body>
 
 </html>
