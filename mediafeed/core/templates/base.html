@@ -18,16 +18,18 @@
         </div>
         <div class="top-header--links">
             {% if request.user.is_authenticated %}
-            <a href="">Sign Out</a>
+            <a href="{% url 'logout' %}">Sign Out</a>
             {% else %}
             <a href="">Sign Up</a>
-            <a href="">Sign In</a>
+            <a href="{% url 'login' %}">Sign In</a>
             {% endif %}
         </div>
     </header>
 
     <main>
+        {% block content %}{% endblock %}
     </main>
+
 {% comment %}
 
     <div class="pure-g">

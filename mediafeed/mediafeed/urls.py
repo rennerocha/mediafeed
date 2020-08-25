@@ -20,5 +20,7 @@ from django.urls import include, path
 
 urlpatterns = [
     path("admin/", admin.site.urls),
-    path("", include("channels.urls")),
+    path("auth/", include("django.contrib.auth.urls")),
+    path("c/", include("channels.urls")),
+    path("", include("core.urls")),
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

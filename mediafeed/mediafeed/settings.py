@@ -115,3 +115,6 @@ BASE_YOUTUBE_FEED_URL = "https://www.youtube.com/feeds/videos.xml"
 CRONJOBS = [
     ("*/30 * * * *", "django.core.management.call_command", ["sync_channels"]),
 ]
+
+LOGIN_REDIRECT_URL = "core:user_profile"
+LOGOUT_REDIRECT_URL = "login"
