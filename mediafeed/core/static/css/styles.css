@@ -7,6 +7,14 @@ body {
     background-color: #FDFDFC
 }
 
+ol, ul {
+	list-style: none;
+}
+
+a {
+    text-decoration: none;
+}
+
 header {
     margin: 0;
     padding: 0;
@@ -35,7 +43,6 @@ main {
 }
 
 .top-header--logo a {
-    text-decoration: none;
     color: #fb6f20;
     font-size: 1.4em;
     font-weight: 900;
@@ -91,8 +98,63 @@ main form input {
     margin-bottom: 0.5em;
 }
 
+.card {
+    border-radius: 10px;
+    box-shadow: 0 3px 2px 0 hsla(0, 0%, 0%, 0.2);
+    margin: 10px;
+}
+
+.cards > ul {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    grid-gap: 2rem;
+}
+
+.cards li {
+    background-color: #f5f5f0;
+}
+
+.card-content {
+    padding: 0 1em 1em 1em;
+}
+
+.card-content a:hover {
+    text-decoration: underline;
+}
+
+.card-content .video-title {
+    display: block;
+    color: #302024;
+    font-size: 0.9em;
+    font-weight: 900;
+}
+
+.card-content .video-channel {
+    display: block;
+    color: #302024;
+    font-weight: 700;
+    font-size: 0.8em;
+    opacity: 0.4;
+    padding-top: 5px;
+}
+
+.card-content .video-date {
+    color: #302024;
+    font-weight: 500;
+    font-size: 0.7em;
+    opacity: 0.4;
+    padding-top: 5px;
+}
+
+img {
+    width: 100%;
+}
+
+
+
 /*
 
+    border-radius: 10px 10px 0 0;
 
 nav {
     margin: 10px;

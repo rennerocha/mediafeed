@@ -30,44 +30,7 @@
         {% block content %}{% endblock %}
     </main>
 
-{% comment %}
-
-    <div class="pure-g">
-        <div class="pure-u-4-24"></div>
-
-        <div class="pure-u-16-24">
-            <div id="menu" class="pure-menu pure-menu-horizontal">
-                <a href="" class="menu-brand pure-menu-heading pure-menu-link">MediaFeed</a>
-
-                <ul class="pure-menu-list">
-                    {% if request.user.is_authenticated %}
-                    <li class="menu-option pure-menu-item">
-                        <a href="" class="pure-menu-link">Log out</a>
-                    </li>
-                    {% else %}
-                    <li class="menu-option pure-menu-item">
-                        <a href="" class="pure-menu-link">Sign in</a>
-                    </li>
-                    <li class="menu-option pure-menu-item">
-                        <a href="" class="pure-menu-link">Sign Up</a>
-                    </li>
-                    {% endif %}
-                </ul>
-            </div>
-
-            <div id="content" class="pure-g">
-                <div class="pure-u-5-5">
-                    {% block content %}
-                    {% endblock %}
-                </div>
-            </div>
-
-        </div>
-
-        <div class="pure-u-4-24"></div>
-    </div>
     {% block extra_js %}{% endblock %}
-{% endcomment %}
 
 </body>
 

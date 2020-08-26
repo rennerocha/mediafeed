@@ -2,6 +2,24 @@
 
 {% block content %}
 
+<section class="cards" id="cards">
+    <ul>
+    {% for video in videos %}
+        <li class="card">
+            <a href="{{ video.url }}" target="_blank">
+                <img src="{{ video.thumbnail_image }}" alt="{{ video.title }}" />
+            </a>
+            <div class="card-content">
+                <a class="video-title" href="{{ video.url }}" target="_blank">{{ video.title }}</a>
+                <a class="video-channel" href="{{ video.channel.url }}" target="_blank">{{ video.channel.title }}</a>
+                <small class="video-date">{{ video.published_date }}</small>
+            </div>
+        </li>
+    {% endfor %}
+    </ul>
+</section>
+
+{% comment %}
 <nav>
     <div class="nav-categories">
         {% for category in categories %}
@@ -75,6 +93,8 @@
 {% endif %}
 
 {% endfor %}
+
+{% endcomment %}
 
 {% endblock %}
 
