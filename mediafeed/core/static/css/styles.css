@@ -129,6 +129,11 @@ main form input {
     font-weight: 900;
 }
 
+.card-content .video-title:hover {
+    color: #fb6f20;
+    text-decoration: none;
+}
+
 .card-content .video-channel {
     display: block;
     color: #302024;
